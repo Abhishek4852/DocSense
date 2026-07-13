@@ -59,3 +59,12 @@ yarn.lock
 
 # Gemini
 .gemini/
+
+# Uploaded Media and Vector Store
+backend/documents/*.pdf
+backend/documents/*.txt
+backend/documents/*.md
+backend/documents/*.csv
+backend/documents/*.docx
+backend/vector_store/*.index
+backend/vector_store/*.pkl

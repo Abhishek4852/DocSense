@@ -15,7 +15,7 @@ CHUNKING_PROFILES = {
     },
     "Legal Document (Act/Code)": {
         "chunk_size": 2500,
-        "chunk_overlap": 500,
+        "chunk_overlap": 800,
         "separators": ["\nCHAPTER ", "\nPART ", "\nClause ", "\n--- Page ", "\n\n", "\n", " ", ""]
     },
     "Code / Technical Documentation": {
