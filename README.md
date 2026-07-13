@@ -15,8 +15,8 @@ In today's fast-paced corporate environment, organizations generate and store ma
 * **Cross-Encoder Re-Ranking**: Ensures unparalleled accuracy. We retrieve the top documents using FAISS, and then re-rank them locally using a Cross-Encoder model (`ms-marco-MiniLM`) before sending only the absolute best context to the LLM, drastically saving API costs while boosting precision.
 * **WhatsApp Integration**: Your AI assistant goes wherever you go. Ask questions directly from WhatsApp and get instant, context-aware replies.
 * **WhatsApp One-Time Configuration**: A dedicated UI dashboard to securely configure your Meta Developer webhooks and tokens in one click.
+* **Multi-Tenant Architecture**: Designed from the ground up for B2B use cases. Each organization gets an isolated workspace. Documents, chats, and vector stores are strictly siloed per organization, ensuring proprietary knowledge remains entirely private.
 * **Enterprise-Grade UI**: A beautiful, animated, and responsive frontend built with Tailwind CSS, featuring full Dark Mode support and glassmorphism aesthetics.
-* **Secure & Isolated**: Organization-level data isolation using robust JWT Authentication.
 
 ---
 
