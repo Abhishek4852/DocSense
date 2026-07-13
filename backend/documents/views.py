@@ -24,11 +24,12 @@ def upload_document(request):
         if ext not in ['pdf', 'md', 'txt', 'csv', 'docx']:
             continue
             
-        doc = Document.objects.create(organization=org, title=file.name, file=file, status='PROCESSING')
+        document_type = request.data.get('document_type', 'Default')
+        doc = Document.objects.create(organization=org, title=file.name, file=file, document_type=document_type, status='PROCESSING')
         
         try:
             text = extract_text(doc.file.path)
-            chunks = chunk_text(text)
+            chunks = chunk_text(text, document_type=document_type)
             embeddings = generate_embeddings(chunks)
             add_to_vector_store(org.id, embeddings, chunks, source_doc=doc.title)
             
@@ -46,7 +47,7 @@ def upload_document(request):
 def list_documents(request):
     org = request.user.organization
     docs = Document.objects.filter(organization=org).order_by('-created_at')
-    data = [{'id': d.id, 'title': d.title, 'status': d.status, 'created_at': d.created_at} for d in docs]
+    data = [{'id': d.id, 'title': d.title, 'status': d.status, 'document_type': d.document_type, 'created_at': d.created_at} for d in docs]
     return Response(data)
 
 @api_view(['DELETE'])
@@ -81,14 +82,16 @@ def upload_text(request):
     import uuid
     from django.core.files.base import ContentFile
     
+    document_type = request.data.get('document_type', 'Default')
+    
     filename = f"{uuid.uuid4().hex}_{title}.txt"
     
-    doc = Document(organization=org, title=title, status='PROCESSING')
+    doc = Document(organization=org, title=title, document_type=document_type, status='PROCESSING')
     doc.file.save(filename, ContentFile(text.encode('utf-8')))
     doc.save()
     
     try:
-        chunks = chunk_text(text)
+        chunks = chunk_text(text, document_type=document_type)
         embeddings = generate_embeddings(chunks)
         add_to_vector_store(org.id, embeddings, chunks, source_doc=doc.title)
         

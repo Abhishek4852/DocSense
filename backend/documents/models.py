@@ -10,6 +10,7 @@ class Document(models.Model):
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE, related_name='documents')
     title = models.CharField(max_length=255)
     file = models.FileField(upload_to='documents/')
+    document_type = models.CharField(max_length=50, default='General')
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='PROCESSING')
     created_at = models.DateTimeField(auto_now_add=True)
 

@@ -24,6 +24,16 @@ export default function UploadPage() {
   const [textTitle, setTextTitle] = useState('');
   const [uploadingText, setUploadingText] = useState(false);
 
+  // Document Type State
+  const [documentType, setDocumentType] = useState('General Article / Report');
+  const documentTypes = [
+    "General Article / Report",
+    "Q&A / FAQs",
+    "Legal Document (Act/Code)",
+    "Code / Technical Documentation",
+    "Financial Report"
+  ];
+
   useEffect(() => {
     fetchDocuments();
   }, []);
@@ -45,6 +55,7 @@ export default function UploadPage() {
     for (let i = 0; i < files.length; i++) {
       formData.append('files', files[i]);
     }
+    formData.append('document_type', documentType);
 
     try {
       await api.post('/documents/upload/', formData, {
@@ -89,7 +100,8 @@ export default function UploadPage() {
     try {
       await api.post('/documents/upload_text/', {
         title: textTitle || 'Pasted Text',
-        text: pastedText
+        text: pastedText,
+        document_type: documentType
       });
       setTextMode(false);
       setPastedText('');
@@ -139,6 +151,21 @@ export default function UploadPage() {
           >
             Paste Text
           </button>
+        </div>
+
+        {/* Document Type Selector */}
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 transition-colors">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Select Document Type</label>
+          <select 
+            value={documentType}
+            onChange={(e) => setDocumentType(e.target.value)}
+            className="w-full sm:w-1/2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-900 dark:text-white rounded-lg p-2.5 text-sm focus:ring-primary focus:border-primary transition-colors"
+          >
+            {documentTypes.map(type => (
+              <option key={type} value={type}>{type}</option>
+            ))}
+          </select>
+          <p className="text-xs text-gray-500 mt-2">Selecting the correct type improves AI accuracy by applying the optimal parsing and chunking strategy.</p>
         </div>
 
         {/* Upload Area */}

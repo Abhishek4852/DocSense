@@ -1,12 +1,12 @@
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from .chunking_config import CHUNK_SIZE, CHUNK_OVERLAP, SEPARATORS
+from .chunking_config import CHUNKING_PROFILES
 
-def chunk_text(text, chunk_size=CHUNK_SIZE, chunk_overlap=CHUNK_OVERLAP):
+def chunk_text(text, document_type="Default"):
+    profile = CHUNKING_PROFILES.get(document_type, CHUNKING_PROFILES["Default"])
+    
     splitter = RecursiveCharacterTextSplitter(
-        chunk_size=chunk_size,
-        chunk_overlap=chunk_overlap,
-        separators=SEPARATORS
+        chunk_size=profile["chunk_size"],
+        chunk_overlap=profile["chunk_overlap"],
+        separators=profile["separators"]
     )
-    # We can keep page metadata if we parse it carefully, 
-    # but for simplicity, we split the text and return chunks.
     return splitter.split_text(text)
