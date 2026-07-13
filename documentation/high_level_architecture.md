@@ -22,7 +22,7 @@ graph TD
     end
     
     %% External AI Services
-    RAG -->|Prompt + Context| Gemini[Google Gemini 1.5 Pro]
+    RAG -->|Prompt + Context| Gemini[Google Gemini 2.5 flash model]
 ```
 
 ## Architectural Layers
