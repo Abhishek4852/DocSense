@@ -24,8 +24,8 @@ The system is designed with a **Multi-Tenant** approach, centered around the `Or
 ### B. Retrieval & Generation (Query Phase)
 1.  **Initial Retrieval**: When a query hits `retriever.py`, it calculates the vector of the question and performs a similarity search in FAISS, retrieving a wide net of results (Top 10-15 chunks).
 2.  **Cross-Encoder Re-Ranking**: The top 15 chunks are passed to `ms-marco-MiniLM-L-6-v2` (a Cross-Encoder). It scores the *exact relationship* between the question and each chunk. The list is re-sorted, and only the Top 3 highest-scoring chunks are kept.
-3.  **Generation**: `generator.py` combines the Top 3 chunks with the user's question and previous chat history into a structured prompt. This is sent to the Google Gemini 1.5 Pro API.
-4.  **Response**: The LLM generates the answer, which is saved to `ChatMessage` and returned to the user via REST or WhatsApp.
+3.  **Generation**: `generator.py` combines the Top 3 chunks with the user's question and previous chat history into a structured prompt. This is sent to the Google Gemini 2.5 flash API.
+5.  **Response**: The LLM generates the answer, which is saved to `ChatMessage` and returned to the user via REST or WhatsApp.
 
 ## 3. Webhook Execution Flow (WhatsApp)
 1.  Meta sends a POST request to `/api/whatsapp/webhook/`.
