@@ -56,6 +56,11 @@ def delete_document(request, doc_id):
     try:
         doc = Document.objects.get(id=doc_id, organization=request.user.organization)
         doc_title = doc.title
+        
+        # Delete the actual physical file from the server
+        if doc.file:
+            doc.file.delete(save=False)
+            
         doc.delete()
         
         # Remove from vector store
