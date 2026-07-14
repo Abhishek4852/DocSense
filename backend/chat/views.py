@@ -3,9 +3,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from .models import ChatSession, ChatMessage
-from rag.retriever import retrieve
-from rag.prompt import build_prompt
-from rag.generator import generate_answer
+# Heavy ML imports deferred
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -51,6 +49,10 @@ def get_session(request, session_id):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def ask_question(request):
+    from rag.retriever import retrieve
+    from rag.prompt import build_prompt
+    from rag.generator import generate_answer
+    
     session_id = request.data.get('session_id')
     question = request.data.get('question')
     selected_docs = request.data.get('selected_docs') # List of document titles

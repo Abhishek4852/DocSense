@@ -3,14 +3,16 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Document
-from rag.parser import extract_text
-from rag.chunking import chunk_text
-from rag.embedding import generate_embeddings
-from rag.vector_store import add_to_vector_store, remove_from_vector_store
+# Heavy ML imports are deferred to function level
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def upload_document(request):
+    from rag.parser import extract_text
+    from rag.chunking import chunk_text
+    from rag.embedding import generate_embeddings
+    from rag.vector_store import add_to_vector_store
+    
     files = request.FILES.getlist('files')
     if not files:
         return Response({'error': 'No files uploaded'}, status=status.HTTP_400_BAD_REQUEST)
@@ -53,6 +55,7 @@ def list_documents(request):
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
 def delete_document(request, doc_id):
+    from rag.vector_store import remove_from_vector_store
     try:
         doc = Document.objects.get(id=doc_id, organization=request.user.organization)
         doc_title = doc.title
@@ -73,6 +76,10 @@ def delete_document(request, doc_id):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def upload_text(request):
+    from rag.chunking import chunk_text
+    from rag.embedding import generate_embeddings
+    from rag.vector_store import add_to_vector_store
+    
     text = request.data.get('text')
     title = request.data.get('title', 'Pasted Text')
     if not text:
