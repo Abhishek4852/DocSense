@@ -25,5 +25,9 @@ COPY . /app/
 # Expose a default port (Render will override this via $PORT)
 EXPOSE 8000
 
-# Run gunicorn (Production server) with 1 worker. Use shell form CMD to allow environment variable evaluation for PORT.
-CMD ["/bin/sh", "-c", "python manage.py migrate && gunicorn config.wsgi:application --bind 0.0.0.0:${PORT:-8000} --workers 1 --timeout 120"]
+# Copy the start script
+COPY start.sh /app/
+RUN chmod +x /app/start.sh
+
+# Run the start script
+CMD ["/app/start.sh"]
