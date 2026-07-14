@@ -26,4 +26,4 @@ COPY . /app/
 EXPOSE 8000
 
 # Run gunicorn (Production server) with 1 worker. Use shell form CMD to allow environment variable evaluation for PORT.
-CMD python manage.py migrate && gunicorn config.wsgi:application --bind 0.0.0.0:${PORT:-8000} --workers 1 --timeout 120
+CMD ["/bin/sh", "-c", "python manage.py migrate && gunicorn config.wsgi:application --bind 0.0.0.0:${PORT:-8000} --workers 1 --timeout 120"]
