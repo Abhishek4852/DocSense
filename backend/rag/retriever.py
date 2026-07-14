@@ -1,6 +1,5 @@
 from .embedding import generate_query_embedding
 from .vector_store import retrieve_similar_chunks
-from sentence_transformers import CrossEncoder
 
 # Lazy load the CrossEncoder model
 _cross_encoder = None
@@ -8,6 +7,7 @@ _cross_encoder = None
 def get_cross_encoder():
     global _cross_encoder
     if _cross_encoder is None:
+        from sentence_transformers import CrossEncoder
         _cross_encoder = CrossEncoder('cross-encoder/ms-marco-MiniLM-L-6-v2')
     return _cross_encoder
 
