@@ -1,4 +1,3 @@
-import google.generativeai as genai
 from django.conf import settings
 
 def generate_answer(prompt):
