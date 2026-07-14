@@ -22,8 +22,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the rest of the Django project
 COPY . /app/
 
-# Expose port 8000 for Render
+# Expose a default port (Render will override this via $PORT)
 EXPOSE 8000
 
-# Run gunicorn (Production server) with 1 worker to prevent Out-Of-Memory (OOM) errors on Free Tier
-CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "1", "--threads", "2", "--timeout", "120"]
+# Run gunicorn (Production server) with 1 worker. Use shell form CMD to allow environment variable evaluation for PORT.
+CMD gunicorn config.wsgi:application --bind 0.0.0.0:${PORT:-8000} --workers 1 --threads 2 --timeout 120
