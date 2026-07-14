@@ -86,11 +86,17 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-# Forced SQLite for Render deployment (ignores DATABASE_URL from .env)
+db_url = os.environ.get('DATABASE_URL')
+url = urllib.parse.urlparse(db_url) if db_url else None
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': url.path[1:] if url else 'postgres',
+        'USER': url.username if url else 'postgres',
+        'PASSWORD': url.password if url else '',
+        'HOST': url.hostname if url else 'localhost',
+        'PORT': url.port if url else 5432,
     }
 }
 
