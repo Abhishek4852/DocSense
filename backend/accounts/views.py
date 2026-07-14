@@ -1,4 +1,4 @@
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework import status
@@ -7,6 +7,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from .serializers import UserSerializer
 
 @api_view(['POST'])
+@authentication_classes([])
 @permission_classes([AllowAny])
 def register(request):
     serializer = UserSerializer(data=request.data)
@@ -16,6 +17,7 @@ def register(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
+@authentication_classes([])
 @permission_classes([AllowAny])
 def login_view(request):
     email = request.data.get('email')
